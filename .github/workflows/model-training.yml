@@ -1,0 +1,53 @@
+name: Automated Model Training
+
+on:
+ push:
+  branches: ["main"]
+ pull_request:
+  branches: ["main"]
+
+jobs:
+ train-model:
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: CheckoutRepositoryCode
+     uses: actions/checkout@v4
+
+   - name: CheckRepositoryFiles
+     run: |
+      echo "Currentdirectory:"
+      pwd
+      echo"Files in repositoryroot:"
+      ls-la
+      echo"Searchingfortest_model.py:"
+      find.-name"test_model.py"
+     
+   - name: CheckoutRepositoryCode
+     uses: action/checkout@V4
+
+   - name: SetupPython
+     uses: action/setup-python@v5
+     with:
+      python-version: '3.10'
+
+   - name: InstallDependencies
+     run: |
+      python-mpip install--upgrade pip
+      python-mpip install pandas numpy scikit-learnjoblib pytest
+
+   - name: ExecuteModelTraining
+     run: pythontrain.py
+
+   - name: ExecuteModelInference
+     run: pytest-vtest_model.py
+
+   - name: ExecuteModelInference
+     run: pythonpredict.py
+
+   - name: UploadTrainModel
+     uses: action/upload-artifact@v4
+     with:
+      name: trained-ml-model
+      path: best_model.joblib
+  
